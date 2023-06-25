@@ -19,7 +19,7 @@
 - value(int i) const - используется для получения данных выполненного запроса.
 - value(const QString &name) const - используется для получения данных выполненного запроса.
 
-####Пример выполнения запроса:
+Пример выполнения запроса:
 helper.setConnect("localhost", 5432, "postgres", "postgres");
 helper.initQuery();
 helper.queryExec("SELECT 1");

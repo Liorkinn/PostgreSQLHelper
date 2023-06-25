@@ -20,6 +20,6 @@
 - value(const QString &name) const - используется для получения данных выполненного запроса.
 
 Пример выполнения запроса:<br>
-helper.setConnect("localhost", 5432, "postgres", "postgres");<br>
-helper.initQuery();<br>
-helper.queryExec("SELECT 1");<br>
+`helper.setConnect("localhost", 5432, "postgres", "postgres");`<br>
+`helper.initQuery();`<br>
+`helper.queryExec("SELECT 1");`<br>

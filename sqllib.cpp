@@ -1,54 +1,69 @@
-#include "sqllib.h"
+#include "postgresqlhelper.h"
+#include <QDebug>
+#include <QSqlError>
 
-Sqllib::Sqllib()
-{
+PostgresqlHelper::PostgresqlHelper(){
 }
 
-//QString Sqllib::print()
-//{
-//    return "Hello!";
-//}
+PostgresqlHelper::~PostgresqlHelper(){
+    //closeConnection();
+}
 
-int Sqllib::PQConnectDB(const QString &hostName, const int &port, const QString &dbName, const QString &password, const QString &userName)
-{
-    qDebug() << "fsfaf";
-    db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName(hostName);
-    db.setPort(port);
-    db.setDatabaseName(dbName);
-    db.setPassword(password);
-    db.setUserName(userName);
+bool PostgresqlHelper::openConnection(const QString& host, const QString& dbName, const QString& user, const QString& password){
+    m_db = QSqlDatabase::addDatabase("QPSQL");
+    m_db.setHostName(host);
+    m_db.setDatabaseName(dbName);
+    m_db.setUserName(user);
+    m_db.setPassword(password);
 
-    if(!db.open()) {
-        qDebug() << "Database is not open!";
-        return 1;
+    if(!m_db.open()){
+        qDebug() << "Connection error:" << m_db.lastError().text();
+        return false;
     }
-    qDebug() << "Database is open!";
-    return 0;
+    qDebug() << "Connection success!";
+    return true;
 }
 
-//int Sqllib::PQOpenConnect()
-//{
-//    if(!db.open()){
-//        qDebug() << "Database is not open!";
-//        return 1;
-//    }
-//    return 0;
+QSqlQuery PostgresqlHelper::querySelect(const QString& strQuery)
+{
+    query = QSqlQuery(m_db);
+    if(query.exec(strQuery)) {
+        qDebug() << "Query error!";
+    }
+    return query;
+}
+
+void PostgresqlHelper::queryExec()
+{
+    query.exec();
+}
+
+void PostgresqlHelper::queryNext()
+{
+    query.next();
+}
+
+//void PostgresqlHelper::closeConnection(){
+//    m_db.close();
 //}
 
-//int Sqllib::PQCloseConnect()
-//{
-//    db.close();
-//    return 0;
+//bool PostgresqlHelper::executeQuery(const QString& query){
+//    QSqlQuery q(m_db);
+//    if(!q.prepare(query)){
+//        qDebug() << "Prepare error:" << q.lastError().text() << q.lastQuery();
+//        return false;
+//    }
+//    if(!q.exec()){
+//        qDebug() << "Execute error:" << q.lastError().text() << q.lastQuery();
+//        return false;
+//    }
+//    return true;
 //}
 
-//int Sqllib::setQuery(QString strQuery)
-//{
-//    query = new QSqlQuery(db);
-
-//    if(!query->exec(strQuery)){
-//        qDebug() << "Query is not exec!";
-//        return 1;
+//QSqlQuery PostgresqlHelper::select(const QString& query){
+//    QSqlQuery q(m_db);
+//    if(!q.exec(query)){
+//        qDebug() << "Query error:" << q.lastError().text() << q.lastQuery();
 //    }
-//    return 0;
+//    return q;
 //}

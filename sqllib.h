@@ -1,25 +1,27 @@
-#ifndef SQLLIB_H
-#define SQLLIB_H
+#ifndef POSTGRESQLHELPER_H
+#define POSTGRESQLHELPER_H
 
-#include "sqllib_global.h"
-#include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-class SQLLIB_EXPORT Sqllib
+class PostgresqlHelper
 {
-
 public:
-    Sqllib();
-  //  QString print();
-    QSqlDatabase db;
-    int PQConnectDB(const QString& hostName, const int& port, const QString& dbName, const QString& password,const QString& userName);
+    PostgresqlHelper();
+    ~PostgresqlHelper();
 
-private:
+    QSqlDatabase m_db;
+    QSqlQuery query;
+    bool openConnection(const QString& host, const QString& dbName, const QString& user, const QString& password);
+    QSqlQuery querySelect(const QString& strQuery);
+    void queryExec();
+    void queryNext();
+  //  void closeConnection();
 
-   // QSqlDatabase db;
-//    int PQOpenConnect();
-//    int PQCloseConnect();
-//    int setQuery(QString strQuery);
+    // функции для взаимодействия с базой данных
+   // bool executeQuery(const QString& query);
+   // QSqlQuery select(const QString& query);
+
+
 };
 
-#endif // SQLLIB_H
+#endif // POSTGRESQLHELPER_H
